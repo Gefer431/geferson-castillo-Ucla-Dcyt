@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="module">
+      // Asegúrate de que el nombre del archivo sea idéntico (mayúsculas/minúsculas)
+      import Cl_cEmpresa from "./dist/controllers/Cl_cEmpresa.js";
+      new Cl_cEmpresa();
+    </script>
+    <section id="body">
+      <div class="container mt-5">
+        <h2>Gestión de la Empresa</h2>
+        <button type="button" class="btn btn-primary" id="body_btNuevoMonto">
+          Nuevo Personal
+        </button>
+        <hr />
+        <div>
+          Monto total pagado a obreros: <span id="body_lblMontoObr">0</span>
+          <div></div>
+          Promedio pagado a 3 obreros: <span id="body_lblPromMontoObr">0</span>
+          <div></div>
+          Monto total pagado a administrativos:
+          <span id="body_lblMontoAdm">0</span>
+          <div></div>
+          Promedio pagado a 2 administrativos:
+          <span id="body_lblPromMontoAdm">0</span>
+        </div>
+      </div>
+    </section>
+    <section id="personal" hidden>
+      <div>
+        <h5 id="personal_lblMonto">Procesar Personal</h5>
+      </div>
+      <div>
+        <label
+          >Monto
+          <input type="number" id="personal_inMonto" placeholder="Ej: 100" />
+        </label>
+        <div></div>
+        <label
+          >Tipo
+          <input
+            type="text"
+            id="personal_inTipo"
+            placeholder="Ej: Oficinista"
+          />
+        </label>
+      </div>
+      <div>
+        <button id="personal_btCancelar">Cancelar</button>
+        <button id="personal_btAceptar">Aceptar</button>
+      </div>
+    </section>
+    <div
+      class="tenor-gif-embed"
+      data-postid="4558444542703030295"
+      data-share-method="host"
+      data-aspect-ratio="0.803213"
+      data-width="20%"
+    >
+      <a
+        href="https://tenor.com/view/futaba-persona-5-persona-gif-4558444542703030295"
+        >Futaba Persona 5 GIF</a
+      >from <a href="https://tenor.com/search/futaba-gifs">Futaba GIFs</a>
+    </div>
+    <script
+      type="text/javascript"
+      async
+      src="https://tenor.com/embed.js"
+    ></script>
+  </body>
+</html>
