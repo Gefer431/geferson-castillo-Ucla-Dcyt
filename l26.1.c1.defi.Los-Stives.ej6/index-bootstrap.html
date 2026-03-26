@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app-bootstrap" class="container mt-5">
+        <h2>Info Empleados (bootstrap)</h2>
+        <button type="button" class="btn btn-primary" id="body_btNuevoEmpleado">Nuevo Empleado</button>
+        <hr>
+        <div class="alert alert-info">
+            Monto Total Pagado a Obreros: $<span id="body_lblMontoObr" class="fw-bold">0</span>
+            <div></div>
+            Promedio pagado a 3 obreros: $<span id="body_lblPromMontoObr" class="fw-bold">0</span>
+            <div></div>
+            Monto total pagado a administrativos: $<span id="body_lblMontoAdm" class="fw-bold">0</span>
+            <div></div>
+            Promedio pagado a 2 administrativos: $<span id="body_lblPromMontoAdm" class="fw-bold">0</span>
+            <div></div>
+            Porcentaje del Monto total de la nomina que se destina al pago de los obreros: %<span id="body_lblPorcentaje" class="fw-bold">0</span>
+        </div>
+    </div>
+    <div class="modal fade" id="empleado" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Procesar Empleado</h5>
+                </div>
+                <div class="modal-body">
+                    <label class="form-label">Monto:</label>
+                    <input type="number" class="form-control" id="empleado_inMonto">
+                    <div></div>
+                    <label class="form-label">Tipo:</label>
+                    <input type="string" class="form-control" id="empleado_inTipo">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="empleado_btCancelar">Cancelar</button>
+                    <button type="button" class="btn btn-success" id="empleado_btAceptar">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+        import Cl_cEmpresa from "./dist/controllers/Cl_cEmpresa.js";
+        import Cl_cEmpleado from "./dist/controllers/Cl_cEmpleado.js";
+    
+        // Importamos SOLO las vistas de Bootstrap
+        import Cl_vEmpresaBootstrap from "./dist/views/Cl_vEmpresaBootstrap.js";
+        import Cl_vEmpleadoBootstrap from "./dist/views/Cl_vEmpleadoBootstrap.js";
+
+        // 1. Instanciamos las vistas
+        const vistaEmpresa = new Cl_vEmpresaBootstrap();
+        const vistaEmpleado = new Cl_vEmpleadoBootstrap();
+
+        // 2. Inyectamos las vistas en los mismos controladores
+        const controladorEmpleado = new Cl_cEmpleado(vistaEmpleado);
+        new Cl_cEmpresa(vistaEmpresa, controladorEmpleado);
+    </script>
+</body>
+</html>
