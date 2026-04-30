@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Academia - HTML Plano</title>
+    <style>
+        .container { max-width: 800px; margin: auto; padding: 1rem; }
+        button { margin-right: 0.5rem; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .alert-info, .alert-secondary, .alert-success { padding: 0.75rem; margin: 1rem 0; }
+        .alert-info { background-color: #e3f2fd; }
+        .alert-secondary { background-color: #f8f9fa; }
+        .alert-success { background-color: #d4edda; }
+        .form-group { margin-bottom: 0.75rem; }
+        .form-group label { display: inline-block; width: 160px; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <div id="app-plain" class="container">
+        <h2>Gestión de Academia (HTML Plano)</h2>
+        <button id="academia_btnNuevoInscrito">Nuevo Inscrito</button>
+        <hr>
+        <div class="alert-info">
+            <strong>Total recaudado:</strong> $<span id="academia_lblTotal">0.00</span>
+        </div>
+        <div class="alert-secondary">
+            <strong>Cantidad por curso:</strong><br>
+            Inglés: <span id="academia_cantIng">0</span><br>
+            Computación: <span id="academia_cantComp">0</span><br>
+            I.A.: <span id="academia_cantIA">0</span>
+        </div>
+        <div class="alert-secondary">
+            <strong>Porcentajes por curso:</strong><br>
+            Inglés: <span id="academia_porcIng">0%</span><br>
+            Computación: <span id="academia_porcComp">0%</span><br>
+            I.A.: <span id="academia_porcIA">0%</span>
+        </div>
+        <div class="alert-success">
+            <strong>Por rangos de edad:</strong><br>
+            Menores de edad (&lt;18): <span id="academia_cantMenor">0</span> (<span id="academia_porcMenor">0%</span>)<br>
+            Adultos (18-50/60): <span id="academia_cantAdulto">0</span> (<span id="academia_porcAdulto">0%</span>)<br>
+            Tercera edad: <span id="academia_cantTercera">0</span> (<span id="academia_porcTercera">0%</span>)<br>
+            <strong>Mayores de edad (>=18):</strong> <span id="academia_cantMayores">0</span> <br>
+            <strong>Promedio de edad:</strong> <span id="academia_lblPromEdad">0.0</span> años
+        </div>
+
+        <h4>Listado de inscritos</h4>
+        <table border="1" width="100%">
+            <thead>
+                <tr><th>Nombre</th><th>Apellido</th><th>Curso</th><th>Pago</th></tr>
+            </thead>
+            <tbody id="tabla-inscritos-body"></tbody>
+        </table>
+
+        <div id="form-inscrito" hidden>
+            <h5>Registrar Inscrito</h5>
+            <div class="form-group"><label>Nombre:</label><input type="text" id="inscrito_nombre"></div>
+            <div class="form-group"><label>Apellido:</label><input type="text" id="inscrito_apellido"></div>
+            <div class="form-group"><label>Cédula:</label><input type="text" id="inscrito_cedula"></div>
+            <div class="form-group"><label>Sexo (M/F):</label><input type="text" id="inscrito_sexo" maxlength="1"></div>
+            <div class="form-group"><label>Fecha Nac (aaaa-mm-dd):</label><input type="date" id="inscrito_fechaNac"></div>
+            <div class="form-group"><label>Tipo Curso (1,2,3):</label><input type="number" id="inscrito_tipoCurso" min="1" max="3"></div>
+            <div id="mensaje" class="error"></div>
+            <div style="margin-top: 1rem;">
+                <button id="inscrito_btnCancelar">Cancelar</button>
+                <button id="inscrito_btnAceptar">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import Cl_cAcademia from "./dist/controllers/Cl_cAcademia.js";
+        import Cl_vAcademiaPlain from "./dist/views/Cl_vAcademiaPlain.js";
+        import Cl_vInscritoPlain from "./dist/views/Cl_vInscritoPlain.js";
+
+        const vistaAcademia = new Cl_vAcademiaPlain();
+        const vistaInscrito = new Cl_vInscritoPlain();
+        new Cl_cAcademia(vistaAcademia, vistaInscrito);
+    </script>
+</body>
+</html>

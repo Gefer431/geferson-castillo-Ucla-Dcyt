@@ -1,0 +1,17 @@
+/** - Se tiene la clase base Persona, con los siguientes datos:
+   -> Nombre
+   -> Apellido
+   -> Cédula
+   -> Sexo (M-F)
+   -> Fecha de nacimiento (aaaa-mm-dd)
+
+-ACADEMIA: Gestión de Pagos de inscripción en Academia
+   -> Se registran los datos básicos de cada inscrito
+   -> Se conoce además de cada inscrito:
+       + Tipo de curso (1:Inglés, 2:Computación, 3:I.A.)
+	   + Inversión: $20, $25, $30 respectivamente
+	   + Descuento de 20% para menores de edad
+	   + Descuento de 40% para 3ra edad (>50 mujeres / >60 hombres)
+   -> Reportar totales varios
+   -> Repotar porcentajes por edades
+   -> Repotar porcentajes por cursos

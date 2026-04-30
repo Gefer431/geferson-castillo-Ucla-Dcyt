@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Academia - Bootstrap</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app-Bootstrap" class="container mt-5">
+        <h2>Gestión de Academia (Bootstrap)</h2>
+        <button type="button" class="btn btn-primary" id="academia_btnNuevoInscrito">Nuevo Inscrito</button>
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="alert alert-info">
+                    <strong>Total recaudado:</strong> $<span id="academia_lblTotal">0.00</span>
+                </div>
+                <div class="alert alert-secondary">
+                    <strong>Cantidad por curso:</strong><br>
+                    Inglés: <span id="academia_cantIng">0</span><br>
+                    Computación: <span id="academia_cantComp">0</span><br>
+                    I.A.: <span id="academia_cantIA">0</span>
+                </div>
+                <div class="alert alert-secondary">
+                    <strong>Porcentajes por curso:</strong><br>
+                    Inglés: <span id="academia_porcIng">0%</span><br>
+                    Computación: <span id="academia_porcComp">0%</span><br>
+                    I.A.: <span id="academia_porcIA">0%</span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="alert alert-success">
+                    <strong>Por rangos de edad:</strong><br>
+                    Menores de edad (&lt;18): <span id="academia_cantMenor">0</span> (<span id="academia_porcMenor">0%</span>)<br>
+                    Adultos (18-50/60): <span id="academia_cantAdulto">0</span> (<span id="academia_porcAdulto">0%</span>)<br>
+                    Tercera edad: <span id="academia_cantTercera">0</span> (<span id="academia_porcTercera">0%</span>)<br>
+                    <strong>Mayores de edad (>=18):</strong> <span id="academia_cantMayores">0</span> <br>
+                    <strong>Promedio de edad:</strong> <span id="academia_lblPromEdad">0.0</span> años
+                </div>
+            </div>
+        </div>
+
+        <h4>Listado de inscritos</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr><th>Nombre</th><th>Apellido</th><th>Curso</th><th>Pago</th></tr>
+            </thead>
+            <tbody id="tabla-inscritos-body"></tbody>
+        </table>
+    </div>
+
+    
+    <div class="modal fade" id="modal-inscrito" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Registrar Inscrito</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label class="form-label">Nombre:</label>
+                    <input type="text" class="form-control" id="inscrito_nombre">
+                    <label class="form-label">Apellido:</label>
+                    <input type="text" class="form-control" id="inscrito_apellido">
+                    <label class="form-label">Cédula:</label>
+                    <input type="text" class="form-control" id="inscrito_cedula">
+                    <label class="form-label">Sexo (M/F):</label>
+                    <input type="text" class="form-control" id="inscrito_sexo" maxlength="1">
+                    <label class="form-label">Fecha Nacimiento (aaaa-mm-dd):</label>
+                    <input type="date" class="form-control" id="inscrito_fechaNac">
+                    <label class="form-label">Tipo Curso (1:Inglés, 2:Computación, 3:I.A.):</label>
+                    <input type="number" class="form-control" id="inscrito_tipoCurso" min="1" max="3">
+                    <div id="mensaje" class="text-danger mt-2"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="inscrito_btnCancelar">Cancelar</button>
+                    <button type="button" class="btn btn-success" id="inscrito_btnAceptar">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+        import Cl_cAcademia from "./dist/controllers/Cl_cAcademia.js";
+        import Cl_vAcademiaBootstrap from "./dist/views/Cl_vAcademiaBootstrap.js";
+        import Cl_vInscritoBootstrap from "./dist/views/Cl_vInscritoBootstrap.js";
+
+        const vistaAcademia = new Cl_vAcademiaBootstrap();
+        const vistaInscrito = new Cl_vInscritoBootstrap();
+        new Cl_cAcademia(vistaAcademia, vistaInscrito);
+    </script>
+</body>
+</html>

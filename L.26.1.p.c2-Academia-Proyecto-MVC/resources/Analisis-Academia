@@ -1,0 +1,95 @@
+# Análisis de la "ACADEMIA"
+
+## Contexto del Problema
+
+La academia requiere automatizar el proceso de cobro de inscripciones para tres áreas de formación. El sistema debe aplicar descuentos automáticos basados en el perfil demográfico del estudiante (edad y género) y generar estadísticas de cierre para la administración, enfocándose en la distribución de ingresos y la segmentación de su audiencia.
+
+## Requerimientos de Salida
+
+El programa debe generar y mostrar obligatoriamente tres bloques de información:
+
+- **R1: Reporte de Totales Varios**  
+  Monto total recaudado por concepto de inscripciones (sumatoria de pagos netos).
+
+- **R2: Reporte de Porcentajes por Edades**  
+  - % de alumnos menores de edad (<18)  
+  - % de alumnos adultos (rango intermedio)  
+  - % de alumnos de la tercera edad (según regla de género/edad)
+
+- **R3: Reporte de Porcentajes por Cursos**  
+  - % de participación del curso de Inglés  
+  - % de participación del curso de Computación  
+  - % de participación del curso de I.A.
+
+- **R4: Cantidad de personas que son mayores de edad** (≥18)
+
+---
+
+## Abstracción lógica de los métodos
+
+### Reporte de Totales Varios
+
+Muestra el dinero acumulado real tras procesar todas las transacciones.
+
+**Variables involucradas**:
+- `acumuladorTotal` (suma de pagos)
+- `costoBase` (precio según curso: $20, $25, $30)
+- `montoDescuento`
+
+**Algoritmo**:
+1. Por cada inscrito, identificar el costo base ($20, $25 o $30).
+2. Calcular el descuento correspondiente según el perfil (0%, 20% o 40%).
+3. Calcular el pago neto: `pagoNeto = costoBase - montoDescuento`.
+4. Acumular: `acumuladorTotal += pagoNeto`.
+5. Al final, mostrar `acumuladorTotal`.
+
+### Porcentajes por Edades
+
+Segmenta a la población estudiantil por perfil demográfico.
+
+**Fase de Clasificación (durante el registro)**  
+Por cada inscrito, evaluar edad y género para incrementar UNO de estos contadores:
+
+- Si `edad < 18` → `contadorMenores++`
+- Si no, evaluar tercera edad:
+  - Si (`sexo == "F"` y `edad > 50`) o (`sexo == "M"` y `edad > 60`) → `contadorTerceraEdad++`
+- Si no cumple ninguna anterior → `contadorAdultos++`
+
+**Fase de Cálculo (al final)**  
+- `% Menores = (contadorMenores / totalInscritos) * 100`
+- `% 3ra Edad = (contadorTerceraEdad / totalInscritos) * 100`
+- `% Adultos = (contadorAdultos / totalInscritos) * 100`
+
+### Porcentajes por Cursos
+
+Identifica la demanda de cada área de estudio.
+
+**Fase de Clasificación (durante el registro)**  
+Según `tipoCurso` (1, 2 o 3):
+
+- `caso 1 (Inglés)` → `contIngles++`
+- `caso 2 (Computación)` → `contComputacion++`
+- `caso 3 (I.A.)` → `contIA++`
+
+**Fase de Cálculo (al final)**  
+- `% Inglés = (contIngles / totalInscritos) * 100`
+- `% Computación = (contComputacion / totalInscritos) * 100`
+- `% I.A. = (contIA / totalInscritos) * 100`
+
+### Cantidad de Mayores de Edad
+
+Reporte simple que cuenta personas con `edad >= 18`.
+
+**Fase de Clasificación (durante el registro)**  
+- Si `edad >= 18` → `contMayoresEdad++`
+
+**Salida**:  
+`cntMayoresEdad = contMayoresEdad`
+
+---
+
+## Identificación de Herencia 
+
+### Herencia
+Se crea la clase `Persona` para gestionar los datos básicos (edad, género, nombre, etc.). La clase `Inscrito` **hereda** de `Persona` y añade la lógica de pago (`costoBase`, `descuento`, `pagoFinal`). Esto evita repetir código de validación de usuario y promueve la reutilización.
+
