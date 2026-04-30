@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clínica - Bootstrap</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app-Bootstrap" class="container mt-5">
+        <h2>Gestión de Atención Médica (Bootstrap)</h2>
+        <button type="button" class="btn btn-primary" id="clinica_btnNuevoPaciente">Nuevo Paciente</button>
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="alert alert-info">
+                    <strong>Total recaudado:</strong> $<span id="clinica_lblTotal">0.00</span>
+                </div>
+                <div class="alert alert-secondary">
+                    <strong>Cantidad por atención:</strong><br>
+                    Procedimiento: <span id="clinica_cantProc">0</span><br>
+                    Consulta: <span id="clinica_cantCons">0</span><br>
+                    Control: <span id="clinica_cantCtrl">0</span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="alert alert-success">
+                    <strong>Porcentajes:</strong><br>
+                    Procedimiento: <span id="clinica_porcProc">0%</span><br>
+                    Consulta: <span id="clinica_porcCons">0%</span><br>
+                    Control: <span id="clinica_porcCtrl">0%</span><br>
+                    Descuento aplicado: <span id="clinica_porcDesc">0%</span><br>
+                    <strong>Promedio de peso:</strong> <span id="clinica_lblPromPeso">0.0</span> kg
+                </div>
+            </div>
+        </div>
+
+        <h4>Listado de pacientes</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr><th>Nombre</th><th>Apellido</th><th>Tipo</th><th>Pago</th></tr>
+            </thead>
+            <tbody id="tabla-pacientes-body"></tbody>
+        </table>
+    </div>
+
+    
+    <div class="modal fade" id="modal-paciente" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Registrar Paciente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label class="form-label">Nombre:</label>
+                    <input type="text" class="form-control" id="paciente_nombre">
+                    <label class="form-label">Apellido:</label>
+                    <input type="text" class="form-control" id="paciente_apellido">
+                    <label class="form-label">Cédula:</label>
+                    <input type="text" class="form-control" id="paciente_cedula">
+                    <label class="form-label">Sexo (M/F):</label>
+                    <input type="text" class="form-control" id="paciente_sexo" maxlength="1">
+                    <label class="form-label">Fecha Nacimiento (aaaa-mm-dd):</label>
+                    <input type="date" class="form-control" id="paciente_fechaNac">
+                    <label class="form-label">Peso (kg):</label>
+                    <input type="number" class="form-control" id="paciente_peso" step="0.1">
+                    <label class="form-label">Tipo Atención (1:Procedimiento, 2:Consulta, 3:Control):</label>
+                    <input type="number" class="form-control" id="paciente_tipo" min="1" max="3">
+                    <div id="mensaje" class="text-danger mt-2"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="paciente_btnCancelar">Cancelar</button>
+                    <button type="button" class="btn btn-success" id="paciente_btnAceptar">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+        import Cl_cClinica from "./dist/controllers/Cl_cClinica.js";
+        import Cl_vClinicaBootstrap from "./dist/views/Cl_vClinicaBootstrap.js";
+        import Cl_vPacienteBootstrap from "./dist/views/Cl_vPacienteBootstrap.js";
+
+        const vistaClinica = new Cl_vClinicaBootstrap();
+        const vistaPaciente = new Cl_vPacienteBootstrap();
+        new Cl_cClinica(vistaClinica, vistaPaciente);
+    </script>
+</body>
+</html>

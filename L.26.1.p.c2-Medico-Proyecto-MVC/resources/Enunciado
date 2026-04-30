@@ -1,0 +1,16 @@
+/** - Se tiene la clase base Persona, con los siguientes datos:
+   -> Nombre
+   -> Apellido
+   -> Cédula
+   -> Sexo (M-F)
+   -> Fecha de nacimiento (aaaa-mm-dd)
+
+-MÉDICO: Gestión de atención médica
+   -> Se registran los datos del paciente
+   -> Se conoce además de cada uno:
+       + Tipo de atención: 1-Procedimiento, 2-Consulta, 3-Control
+	   + Costos: $30, $10, $0 respectivamente
+	   + Si es mujer joven (25-50), sólo paga el 60%
+   -> Reportar totales varios
+   -> Repotar porcentajes por atención
+   -> Repotar porcentajes por descuento

@@ -1,0 +1,75 @@
+# Análisis de "Médico"
+
+## 1. Definición de Datos (Entradas)
+
+El sistema requiere capturar dos niveles de información para poder funcionar:
+
+### A. Datos de Persona (Clase Base)
+- Nombre y Apellido.
+- Cédula de identidad.
+- Sexo: identificado como Masculino (M) o Femenino (F).
+- Fecha de nacimiento: en formato `aaaa-mm-dd` (necesaria para calcular la edad).
+
+### B. Datos del Paciente (Atributos específicos)
+- **Peso**: requerido para registros médicos y estadísticas.
+- **Tipo de atención**: valor numérico que define el servicio:
+  1. Procedimiento → $30
+  2. Consulta → $10
+  3. Control → $0
+
+## 2. Requerimientos de Lógica (Procesamiento)
+
+Cálculos que el programa debe realizar automáticamente:
+
+- **Cálculo de Edad**: determinar la edad actual a partir de la fecha de nacimiento.
+- **Determinación de Costos**: asignar precio base ($30, $10 o $0) según el tipo de atención.
+- **Lógica de Descuento (Condicional)**:
+  - Criterio: mujer (Sexo = F) y edad entre 25 y 50 años (inclusive).
+  - Beneficio: paga solo el 60% del costo (descuento del 40%).
+- **Cálculo de Pago Final**: aplicar descuento al costo base si corresponde.
+- **Promedio de peso**: `acPeso / pacientesTotal` (suma de pesos dividida entre cantidad de pacientes).
+
+## 3. Requerimientos de Salida (Reportes Estadísticos)
+
+Al final del proceso o tras registrar varios pacientes, el sistema debe generar:
+
+- **Totales varios**:
+  - Monto total recaudado.
+  - Cantidad total de pacientes atendidos.
+  - Contador individual de Procedimientos, Consultas y Controles.
+- **Porcentajes por atención**: proporción del total de pacientes para cada tipo de servicio.
+- **Porcentajes por descuento**: porcentaje de pacientes que recibieron el beneficio (mujeres jóvenes).
+- **Promedio de peso**.
+
+---
+
+## Explicación técnica (capas MVC)
+
+### 1. La Capa de Modelo (Cálculos y Reglas)
+Es el núcleo del sistema donde reside la inteligencia del negocio. No sabe de pantallas ni botones.
+
+- **Jerarquía de clases**: `Paciente` extiende `Persona`. Reutiliza datos básicos y añade atributos específicos (peso, tipo de atención).
+- **Lógica de acumulación**: la clase `Clínica` actúa como contenedor central. Recibe objetos `Paciente`, extrae valores calculados y actualiza contadores globales (total recaudado, promedio de peso, etc.).
+
+### 2. La Capa de Vista (Interfaz y Captura)
+Representación visual y punto de contacto con el usuario.
+
+- **Abstracción mediante interfaces** (`I_vPaciente`, `I_vClinica`): permite flexibilidad. Definen *qué* puede hacer la vista (mostrar mensajes, limpiar formulario, agregar filas a la tabla) sin importar *cómo* está construida.
+- **Gestión de elementos**: traduce los datos de los campos de texto a formatos entendibles por el programa (números, fechas).
+
+### 3. La Capa de Controlador (Mediación y Flujo)
+Ordena las operaciones y asegura que Modelo y Vista trabajen sincronizados.
+
+**Ciclo de vida de una operación**:
+1. El controlador detecta una acción en la vista (ej. `aceptar()`).
+2. Extrae los datos de `VistaPaciente` y crea una instancia del `ModeloPaciente`.
+3. Envía el paciente al `ModeloClinica` para procesarlo estadísticamente.
+4. Solicita los nuevos resultados al modelo y ordena a `VistaClinica` que los muestre (`actualizarVista()`).
+
+### Lógica de los métodos principales
+
+- **Encapsulamiento**: `costoBase()`, `descuento()`, `pagoFinal()` están dentro de `Paciente` porque dependen exclusivamente de sus propios datos.
+- **Procesamiento centralizado**: `procesarPaciente()` (en `Clinica`) es el método más importante; ejecuta la lógica de sumatoria que alimenta todas las estadísticas.
+
+### Herencia
+Se crea `Persona` para gestionar datos básicos (edad, sexo). `Paciente` hereda estos datos y añade la lógica de pago. Esto evita repetir código de validación.
