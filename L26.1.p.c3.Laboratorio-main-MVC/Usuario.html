@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuario - Laboratorios</title>
+  <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f4f6f9;
+      color: #1e293b;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    .sidebar {
+      float: left;
+      width: 260px;
+      margin-right: 20px;
+      background: #f8fafc;
+      padding: 15px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+    }
+    .main-content {
+      overflow: hidden;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: inline-block;
+      width: 100px;
+      font-weight: bold;
+    }
+    input, select {
+      padding: 6px 10px;
+      width: 180px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 6px 12px;
+      background: #dc2626;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #b91c1c;
+    }
+    .leyenda {
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+    .leyenda span {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 12px;
+      margin-right: 5px;
+    }
+    .grid-equipos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .equipo-card {
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 10px;
+      background: #fff;
+    }
+    .card-activo { border-top: 3px solid #16a34a; }
+    .card-inactivo { border-top: 3px solid #94a3b8; }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 6px;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+    .estado-badge {
+      padding: 2px 6px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: bold;
+    }
+    .est-activo { background: #bbf7d0; color: #166534; }
+    .est-reportado { background: #fed7aa; color: #9a3412; }
+    .est-mantenimiento { background: #fecaca; color: #991b1b; }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #1e293b;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 6px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; }
+    .toast.warn { background: #b91c1c; }
+    .clearfix::after { content: ""; clear: both; display: table; }
+    @media (max-width: 768px) {
+      .sidebar, .main-content { float: none; width: 100%; }
+      .sidebar { margin-right: 0; margin-bottom: 20px; }
+      label { display: block; width: 100%; margin-bottom: 6px; }
+      input, select, textarea, button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<div class="container clearfix">
+  <h1>👩‍💻 Vista Usuario - Equipos Disponibles</h1>
+  <div class="sidebar">
+    <h3>Filtros y Reportes</h3>
+    <div class="form-group">
+      <label for="filtroLab">Laboratorio:</label>
+      <select id="filtroLab">
+        <option value="">Todos</option>
+        <option>Lab-1</option><option>Lab-2</option><option>Lab-3</option>
+        <option>Lab-4</option><option>Lab-5</option><option>Lab-6</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="filtroProcesador">Procesador:</label>
+      <input type="text" id="filtroProcesador" placeholder="Intel, AMD...">
+    </div>
+    <div class="form-group">
+      <label for="filtroMemoria">Memoria:</label>
+      <input type="number" id="filtroMemoria" placeholder="8">
+    </div>
+    <hr>
+    <h4>Reportar falla</h4>
+    <div class="form-group">
+      <label for="inIdReporte">ID Equipo:</label>
+      <input type="text" id="inIdReporte" placeholder="Ej: PC-001">
+    </div>
+    <div class="form-group">
+      <label for="inObservaciones">Observaciones:</label>
+      <textarea id="inObservaciones" rows="4" style="width:100%; padding:6px; border:1px solid #ccc; border-radius:4px;" placeholder="Describe el motivo del reporte"></textarea>
+    </div>
+    <button id="btnReportar">⚠ Reportar</button>
+
+  </div>
+
+  <div class="main-content">
+    <h3>Equipos en los laboratorios</h3>
+    <div id="gridEquipos" class="grid-equipos">
+      <p>Cargando...</p>
+    </div>
+  </div>
+</div>
+<div id="toast" class="toast"></div>
+
+<script type="module">
+  import Cl_cUsuario from "./dist/controllers/Cl_cEquipos.js";
+  import Cl_vUsuario from "./dist/views/Cl_vEquipos.js";
+  import Cl_mLaboratorio from "./dist/models/Cl_mLaboratorios.js";
+
+  const modelo = new Cl_mLaboratorio();
+  const vista = new Cl_vUsuario();
+  new Cl_cUsuario({ modelo, vista });
+</script>
+</body>
+</html>

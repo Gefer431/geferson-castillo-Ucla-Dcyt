@@ -1,0 +1,215 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Técnico - Laboratorios</title>
+  <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f4f6f9;
+      color: #1e293b;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .form-section, .list-section {
+      margin-bottom: 2rem;
+      border: 1px solid #ddd;
+      padding: 1rem;
+      border-radius: 6px;
+      background: #fff;
+    }
+    .form-group {
+      margin-bottom: 10px;
+    }
+    label {
+      display: inline-block;
+      width: 120px;
+      font-weight: bold;
+    }
+    input, select {
+      padding: 6px 10px;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 6px 12px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 5px;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+    .btn-secondary {
+      background: #64748b;
+    }
+    .btn-secondary:hover {
+      background: #475569;
+    }
+    .stats {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .stat-card {
+      background: #eef2ff;
+      padding: 10px 15px;
+      border-radius: 6px;
+      min-width: 100px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background: #e2e8f0;
+    }
+    .estado-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    .activo { background: #bbf7d0; color: #166534; }
+    .reportado { background: #fed7aa; color: #9a3412; }
+    .mantenimiento { background: #fecaca; color: #991b1b; }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #1e293b;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 6px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .toast.show {
+      opacity: 1;
+    }
+    .toast.warn {
+      background: #b91c1c;
+    }
+    @media (max-width: 768px) {
+      .form-group { display: block; }
+      label { width: 100%; margin-bottom: 6px; }
+      input, select, button { width: 100%; margin-bottom: 10px; }
+      .stats { flex-direction: column; }
+      .list-section { overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🔧 Panel Técnico - Control de Laboratorios</h1>
+  <!-- Estadísticas -->
+  <div class="stats">
+    <div class="stat-card"><div class="stat-number" id="cntActivo">0</div><div>Activos</div></div>
+    <div class="stat-card"><div class="stat-number" id="cntReportado">0</div><div>Reportados</div></div>
+    <div class="stat-card"><div class="stat-number" id="cntMant">0</div><div>Mantenimiento</div></div>
+    <div class="stat-card"><div class="stat-number" id="cntDaniados">0%</div><div>Equipos dañados (%)</div></div>
+    <div class="stat-card"><div class="stat-number" id="cntTotal">0</div><div>Total</div></div>
+  </div>
+
+  <!-- Formulario de registro -->
+  <div class="form-section">
+    <h3>Registrar nuevo equipo</h3>
+    <div class="form-group"><label for="inMarca">Marca:</label> <input type="text" id="inMarca" placeholder="Ej: Dell"></div>
+    <div class="form-group"><label for="inProcesador">Procesador:</label> <input type="text" id="inProcesador" placeholder="Intel i5"></div>
+    <div class="form-group"><label for="inMemoria">Memoria (GB):</label> <input type="number" id="inMemoria" placeholder="8"></div>
+    <div class="form-group"><label for="inLaboratorio">Laboratorio:</label>
+      <select id="inLaboratorio">
+        <option value="">Seleccione</option>
+        <option>Lab-1</option><option>Lab-2</option><option>Lab-3</option>
+        <option>Lab-4</option><option>Lab-5</option><option>Lab-6</option>
+      </select>
+    </div>
+    <div class="form-group"><label for="inMeson">Mesón:</label> <input type="text" id="inMeson" placeholder="M1"></div>
+    <div class="form-group"><label for="inPuesto">Puesto:</label> <input type="text" id="inPuesto" placeholder="P1"></div>
+    <div class="form-group"><label for="inEstado">Estado inicial:</label>
+      <select id="inEstado">
+        <option value="activo">Activo</option>
+        <option value="mantenimiento">Mantenimiento</option>
+      </select>
+    </div>
+    <div>
+      <button id="btnRegistrar">Registrar</button>
+      <button id="btnLimpiar" class="btn-secondary">Limpiar</button>
+    </div>
+  </div>
+
+  <!-- Filtros y listado -->
+  <div class="list-section">
+    <h3>Inventario de equipos</h3>
+    <div style="margin-bottom: 10px;">
+      <label for="filtroLab">Filtrar por laboratorio:</label>
+      <select id="filtroLab">
+        <option value="">Todos</option>
+        <option>Lab-1</option><option>Lab-2</option><option>Lab-3</option>
+        <option>Lab-4</option><option>Lab-5</option><option>Lab-6</option>
+      </select>
+      <label for="filtroProcesador" style="margin-left: 15px;">Procesador:</label>
+      <input type="text" id="filtroProcesador" placeholder="Intel, AMD..." style="margin-right: 10px; padding: 6px 10px; width: 140px;">
+      <label for="filtroMemoria" style="margin-left: 15px;">Memoria:</label>
+      <input type="number" id="filtroMemoria" placeholder="8" style="margin-right: 10px; padding: 6px 10px; width: 80px;">
+      <label for="filtroEstado" style="margin-left: 15px;">Filtrar por estado:</label>
+      <select id="filtroEstado">
+        <option value="">Todos</option>
+        <option value="activo">Activo</option>
+        <option value="reportado">Reportado</option>
+        <option value="mantenimiento">Mantenimiento</option>
+      </select>
+    </div>
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Marca</th><th>Procesador</th><th>RAM</th><th>Lab</th><th>Mesón</th><th>Puesto</th><th>Observaciones</th><th>Estado</th><th>Acciones</th></tr>
+      </thead>
+      <tbody id="tbodyInventario"><tr><td colspan="9">Cargando...</td></tr></tbody>
+    </table>
+  </div>
+</div>
+<div id="toast" class="toast"></div>
+
+<script type="module">
+  import Cl_cTecnico from "./dist/controllers/Cl_cLaboratorios.js";
+  import Cl_vTecnico from "./dist/views/Cl_vLaboratorios.js";
+  import Cl_mLaboratorio from "./dist/models/Cl_mLaboratorios.js";
+
+  const modelo = new Cl_mLaboratorio();
+  const vista = new Cl_vTecnico();
+  new Cl_cTecnico({ modelo, vista });
+</script>
+</body>
+</html>
